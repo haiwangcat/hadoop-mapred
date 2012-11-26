@@ -888,7 +888,7 @@ public class JobClient extends Configured implements MRConstants, Tool  {
           } else {
             jobCopy.getOutputFormat().checkOutputSpecs(fs, jobCopy);
           }
-
+          
           jobCopy = (JobConf)context.getConfiguration();
 
           // Create the splits for the job
@@ -1259,7 +1259,6 @@ public class JobClient extends Configured implements MRConstants, Tool  {
   public static RunningJob runJob(JobConf job) throws IOException {
     JobClient jc = new JobClient(job);
     RunningJob rj = jc.submitJob(job);
-    //Thread.currentThread().sleep(3000);
     try {
       if (!jc.monitorAndPrintJob(job, rj)) {
         LOG.info("Job Failed: " + rj.getFailureInfo());
@@ -1282,17 +1281,15 @@ public class JobClient extends Configured implements MRConstants, Tool  {
   public boolean monitorAndPrintJob(JobConf conf, 
                                     RunningJob job
   ) throws IOException, InterruptedException {
-      //Thread.sleep(3000);
     String lastReport = null;
     TaskStatusFilter filter;
     filter = getTaskOutputFilter(conf);
     JobID jobId = job.getID();
-    LOG.info("Running JOB: " + jobId);
+    LOG.info("Running job: " + jobId);
     int eventCounter = 0;
     boolean profiling = conf.getProfileEnabled();
     Configuration.IntegerRanges mapRanges = conf.getProfileTaskRange(true);
     Configuration.IntegerRanges reduceRanges = conf.getProfileTaskRange(false);
-    LOG.info("Still running job: " + jobId);
 
     while (!job.isComplete()) {
       Thread.sleep(1000);

@@ -322,7 +322,7 @@ class IFile {
      * @return the no. of bytes read
      * @throws IOException
      */
-    public int readData(byte[] buf, int off, int len) throws IOException {
+    private int readData(byte[] buf, int off, int len) throws IOException {
       int bytesRead = 0;
       while (bytesRead < len) {
         int n = in.read(buf, off+bytesRead, len-bytesRead);

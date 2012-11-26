@@ -4972,7 +4972,6 @@ public class JobTracker implements MRConstants, InterTrackerProtocol,
   public static void main(String argv[]
                           ) throws IOException, InterruptedException {
     StringUtils.startupShutdownMessage(JobTracker.class, argv, LOG);
-    System.out.println("********Test**********");
     
     try {
       if(argv.length == 0) {
