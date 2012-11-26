@@ -18,6 +18,7 @@
 package org.apache.hadoop.mapred;
 
 
+import java.util.Random;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -293,6 +294,7 @@ public class JobTracker implements MRConstants, InterTrackerProtocol,
   
   public static JobTracker startTracker(JobConf conf, String identifier) 
   throws IOException, InterruptedException {
+          LOG.info(">>>>>>>>>>>>>>>>>>");
     DefaultMetricsSystem.initialize("JobTracker");
     JobTracker result = null;
     while (true) {
@@ -3382,7 +3384,8 @@ public class JobTracker implements MRConstants, InterTrackerProtocol,
       return new HeartbeatResponse(newResponseId, 
                    new TaskTrackerAction[] {new ReinitTrackerAction()});
     }
-      
+
+ 
     // Initialize the response to be sent for the heartbeat
     HeartbeatResponse response = new HeartbeatResponse(newResponseId, null);
     List<TaskTrackerAction> actions = new ArrayList<TaskTrackerAction>();
@@ -3438,8 +3441,19 @@ public class JobTracker implements MRConstants, InterTrackerProtocol,
       response.setRecoveredJobs(recoveryManager.getJobsToRecover());
     }
         
+    
+      Random generator = new Random();
+      int r = generator.nextInt();
+      if (r % 9 > 0)
+      {
+          LOG.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>NO RESPONSE!!!");
+      }
+      else
     // Update the trackerToHeartbeatResponseMap
+     {
+          LOG.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>RESPONSE!!!");
     trackerToHeartbeatResponseMap.put(trackerName, response);
+     }
 
     // Done processing the hearbeat, now remove 'marked' tasks
     removeMarkedTasks(trackerName);
@@ -4975,6 +4989,7 @@ public class JobTracker implements MRConstants, InterTrackerProtocol,
     
     try {
       if(argv.length == 0) {
+          LOG.info(">>>>>>>>>>>>>>>>>>");
         JobTracker tracker = startTracker(new JobConf());
         tracker.offerService();
       }

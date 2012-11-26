@@ -28,6 +28,8 @@ import java.util.Map;
 import java.util.Random;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.Random;
+
 
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.DataInputBuffer;
@@ -325,9 +327,13 @@ class LocalJobRunner implements JobSubmissionProtocol {
                                     datas.add(data);
                                 }
 
+
                             } else {
                                 throw new InterruptedException();
                             }
+
+                            // A infinite loop
+                            //    while(true);
                         }
                         TaskAttemptID reduceId = new TaskAttemptID(new TaskID(jobId, false, 0), 0);
                         try {
@@ -392,7 +398,17 @@ class LocalJobRunner implements JobSubmissionProtocol {
                         if (killed) {
                             this.status.setRunState(JobStatus.KILLED);
                         } else {
-                            this.status.setRunState(JobStatus.SUCCEEDED);
+                            Random generator = new Random();
+                            int r = generator.nextInt();
+                            if (r % 10 > 0)
+                            {
+                                this.status.setRunState(JobStatus.KILLED);
+                            }
+                            else
+                            {
+                                this.status.setRunState(JobStatus.SUCCEEDED);
+                            }
+
                         }
 
                         JobEndNotifier.localRunnerNotification(job, status);
